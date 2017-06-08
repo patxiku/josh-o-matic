@@ -1,4 +1,4 @@
-#Josh-o-matic v0.1
+#Josh-o-matic v0.11
 #Contributors: Patxiku, Fat-animal
 #---------------------------------
 import requests
@@ -9,10 +9,9 @@ from time import sleep
 API = "http://www.matthewlush.com/VotingSystem/submitVote.php"
 IPCSV = "resources/us.csv"
 PROXIES = "resources/proxies.txt"
-JOSHPERCENTAGE = 75
+JOSHPERCENTAGE = 57
 JOSHID = 7
-#Doesn't always work since server has some proxies in its blacklist
-USEPROXY = False
+USEPROXY = True
 
 iterations = 0
 
@@ -53,8 +52,25 @@ def whoToVote():
         voteID = JOSHID
     return voteID
 
+
+print("------------------------------------------")
+print("#            JOSH-O-MATIC                #")
+print("------------------------------------------")
+print(" ")
+print(".....................................v0.11")
+print(" ")
+print("Do you want to use proxies? y/n \n*some proxies might not work and/or be slow.")
+ans = input();
+if ans == 'y':
+    USEPROXY = True
+else:
+    USEPROXY = False
+
 while True:
     iterations += 1
+    print("------------------------------------------------")
+    print("                 Iteration #"+str(iterations))
+    print("------------------------------------------------")
     who = whoToVote()
     name = 'Faggot #'+str(who)
     if who == JOSHID:
@@ -67,6 +83,7 @@ while True:
         try:
             x = requests.post(API,params=postvars,proxies={'http' : proxy})
         except requests.exceptions.ProxyError:
+            print ("Error")
             continue
     else: 
         ip = obtainRandomIP()
@@ -75,14 +92,16 @@ while True:
         x = requests.post(API,params=postvars)
 
     if (x.text == "Thank you for voting!"):
-        print ('You voted for '+name+'. This program has done '+str(iterations)+' iterations. Thank you for using josh-o-matic.')
-        sleepytime = random.randint(7,12)
-        print ("Waiting for " + str(sleepytime) + " seconds")
-        sleep(sleepytime)
+        print ('You voted for '+name+'.\nThank you for using josh-o-matic!')
+        sleepytime = random.randint(15,30)
+        print ("Waiting for " + str(sleepytime) + " seconds",end="")
+        for counter in range(sleepytime):
+            print(".",end="")
+            sleep(1)
     else:
         print ('Server noticed about the proxy, trying again...')
 
-
+    print("")
 
 
 
